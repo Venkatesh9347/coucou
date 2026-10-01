@@ -84,6 +84,14 @@ jobs:
           name: Coucou-Windows-setup
           path: windows/release/Coucou-Windows-${{ steps.pack.outputs.version }}-setup.exe
 
+      # Unconditional so a clean-machine build can be verified without
+      # publishing. Independent of PUBLISH, so `npm run pack` on a manual run
+      # still yields a downloadable installer. Publishing stays gated.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Coucou-Windows-setup-build
+          path: windows/release/Coucou-Windows-${{ steps.pack.outputs.version }}-setup.exe
+
       - name: Publish the release
         if: env.PUBLISH == 'true' && startsWith(github.ref, 'refs/tags/windows-v')
         shell: pwsh
